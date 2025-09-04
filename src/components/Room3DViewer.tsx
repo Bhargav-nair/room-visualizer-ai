@@ -119,15 +119,15 @@ function Scene() {
 export function Room3DViewer() {
   return (
     <div className="w-full h-full flex flex-col">
-      <Card className="flex-1 shadow-soft border-border/50">
-        <CardHeader className="pb-4">
+      <Card className="flex-1 shadow-soft border-border/50 overflow-hidden">
+        <CardHeader className="pb-4 flex-shrink-0">
           <CardTitle className="text-lg font-semibold flex items-center gap-2">
             <Box className="w-5 h-5 text-primary" />
             3D Room Preview
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-0 h-[calc(100%-4rem)]">
-          <div className="w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-background to-muted">
+        <CardContent className="p-0 flex-1 min-h-0">
+          <div className="w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-background to-muted" style={{ minHeight: '300px', maxHeight: '100%' }}>
             <Canvas
               camera={{ 
                 position: [5, 4, 5], 
@@ -137,6 +137,8 @@ export function Room3DViewer() {
               }}
               shadows
               className="w-full h-full"
+              style={{ display: 'block', width: '100%', height: '100%' }}
+              resize={{ scroll: false, debounce: { scroll: 50, resize: 0 } }}
             >
               <Scene />
               <OrbitControls 
@@ -160,7 +162,7 @@ export function Room3DViewer() {
       </Card>
       
       {/* 3D Controls Info */}
-      <div className="mt-4 p-3 bg-muted/50 rounded-lg border border-border/30">
+      <div className="mt-4 p-3 bg-muted/50 rounded-lg border border-border/30 flex-shrink-0">
         <p className="text-xs text-muted-foreground text-center">
           🖱️ Click & drag to rotate • 🔍 Scroll to zoom • ⚡ Right-click & drag to pan
         </p>
