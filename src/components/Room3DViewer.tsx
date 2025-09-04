@@ -130,8 +130,8 @@ export function Room3DViewer() {
           <div className="w-full h-full rounded-lg overflow-hidden bg-gradient-to-br from-background to-muted">
             <Canvas
               camera={{ 
-                position: [8, 6, 8], 
-                fov: 50,
+                position: [5, 4, 5], 
+                fov: 60,
                 near: 0.1,
                 far: 1000
               }}
@@ -143,11 +143,16 @@ export function Room3DViewer() {
                 enablePan={true}
                 enableZoom={true}
                 enableRotate={true}
-                minDistance={2}
-                maxDistance={20}
-                maxPolarAngle={Math.PI / 2.1}
+                minDistance={3}
+                maxDistance={15}
+                maxPolarAngle={Math.PI / 2.2}
                 autoRotate={false}
                 autoRotateSpeed={0.5}
+                dampingFactor={0.05}
+                enableDamping={true}
+                zoomSpeed={0.5}
+                rotateSpeed={0.5}
+                panSpeed={0.5}
               />
             </Canvas>
           </div>
