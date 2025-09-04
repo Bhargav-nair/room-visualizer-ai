@@ -1,73 +1,110 @@
-# Welcome to your Lovable project
+# RoomGen MVP - Floor Plan → Magic Prompt → 3D Room
 
-## Project info
+A minimal full-stack MVP app that transforms floor plans into beautiful 3D room visualizations using AI-powered style prompts.
 
-**URL**: https://lovable.dev/projects/68d39999-a42a-48c3-8141-ab11f4fe0142
+## Features
 
-## How can I edit this code?
+### Frontend (React + Tailwind + Three.js)
+- **Left Panel:**
+  - Textarea for user style prompt
+  - Magic Prompt button (enhances grammar/clarity)
+  - Generate Top View button (calls Recraft AI)
+  - Preview of generated image
+  - List of layout suggestions
 
-There are several ways of editing your application.
+- **Right Panel:**
+  - 3D viewer (Three.js + OrbitControls)
+  - Renders extruded 3D room from FloorPlanJSON
+  - Interactive camera controls (rotate, zoom, pan)
 
-**Use Lovable**
+### Backend (FastAPI)
+- `/magic-prompt` → uses OpenAI GPT-4o-mini to clean/improve prompt
+- `/gen-image` → calls Recraft AI Image Generation API (1024x1024, style recraft-v3-raw)
+- `/optimize-layout` → rule-based checks (room size, proportions, etc.)
+- `/static` → serve saved images
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/68d39999-a42a-48c3-8141-ab11f4fe0142) and start prompting.
+## Data Contract Example (FloorPlanJSON)
 
-Changes made via Lovable will be committed automatically to this repo.
+```json
+{
+  "units": "cm",
+  "rooms": [
+    {
+      "id": "room-1",
+      "name": "Living Room",
+      "polygon": [[0,0], [500,0], [500,400], [0,400]],
+      "height": 300
+    }
+  ],
+  "openings": [],
+  "furniture": []
+}
+```
 
-**Use your preferred IDE**
+## Environment Variables
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+```bash
+OPENAI_API_KEY=your_openai_key_here
+RECRAFT_API_KEY=your_recraft_key_here
+```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Quick Start
 
-Follow these steps:
+### Option 1: Frontend Only (Current Setup)
+The frontend is ready to run and includes mock API responses:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### Option 2: Full Stack (Frontend + Backend)
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Backend:**
+```bash
+cd backend-example
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
 
-**Use GitHub Codespaces**
+**Frontend:**
+```bash
+npm install
+npm run dev
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Technology Stack
 
-## What technologies are used for this project?
+- **Frontend:** React 18, TypeScript, Tailwind CSS, Three.js, React Three Fiber
+- **Backend:** FastAPI, OpenAI API, Recraft AI API
+- **UI Components:** shadcn/ui with custom architectural design system
 
-This project is built with:
+## Design System
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The app features a modern architectural design with:
+- Cool blue/gray palette for professional feel
+- Smooth animations and transitions
+- Card-based layouts with soft shadows
+- Semantic color tokens for consistency
+- Responsive split-panel layout
 
-## How can I deploy this project?
+## API Integration
 
-Simply open [Lovable](https://lovable.dev/projects/68d39999-a42a-48c3-8141-ab11f4fe0142) and click on Share -> Publish.
+The frontend is currently set up with mock responses. To integrate with the actual backend:
 
-## Can I connect a custom domain to my Lovable project?
+1. Update the API calls in `ControlPanel.tsx` to point to your FastAPI server
+2. Replace mock responses with actual fetch calls
+3. Handle loading states and error responses
 
-Yes, you can!
+## Next Steps
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- [ ] Integrate actual backend API calls
+- [ ] Add file upload for custom floor plans
+- [ ] Expand furniture placement features
+- [ ] Add more room types and templates
+- [ ] Implement user authentication
+- [ ] Add export functionality for 3D models
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Note
+
+This is a Lovable project that runs React + Vite + TypeScript. The FastAPI backend is provided as a reference implementation and needs to be run separately. For a fully integrated solution, consider using Supabase Edge Functions instead of FastAPI.
